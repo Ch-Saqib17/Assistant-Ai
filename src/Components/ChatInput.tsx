@@ -8,7 +8,7 @@ import { nanoid } from "nanoid";
 import { FC, HTMLAttributes, useContext, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
-import { any } from "zod";
+import { RawCreateParams, ZodAny, any } from "zod";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -23,7 +23,8 @@ const ChatInput: FC<ChatInputProps> = ({ className, ...props }) => {
     setIsMessageUpdating,
   } = useContext(MessagesContext);
 
-  const { mutate: sendMessage, isLoading   } = useMutation({
+  const [isLoading, setisLoading] = useState(false);
+  const { mutate: sendMessage } = useMutation({
     mutationKey: ["sendMessage"],
     // include message to later use it in onMutate
     mutationFn: async (_message: Message) => {
